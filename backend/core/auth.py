@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer
-from core.token_blacklist import is_token_blacklisted
+from utils.token_blacklist import is_token_blacklisted
 import jwt
 
 from core.security import SECRET_KEY, ALGORITHM
