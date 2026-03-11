@@ -1,0 +1,58 @@
+# Python
+__pycache__
+*.pyc
+*.pyd
+*.pyo
+.Python
+env
+venv
+ENV
+venv.bak
+env.bak
+.venv
+lib/
+lib64/
+include/
+share/
+bin/
+# virtualenv
+# .env file for secrets
+.env*
+
+# Editors/IDE
+# VS Code
+.vscode/
+# PyCharm/IntelliJ
+.idea/
+
+# OS
+# macOS
+.DS_Store
+
+# Testing/Coverage
+.coverage
+.pytest_cache/
+htmlcov/
+xmlcov/
+
+# Databases
+*.db
+test.db*
+sqlite.db
+sqlite3.db
+
+# Documentation
+docs/_build/
+site/
+
+# Packaging
+dist/
+build/
+*.egg-info/
+*.whl
+
+# Specific FastAPI/Web files
+log.txt
+*.zip
+*.tar.gz
+.netlify/
