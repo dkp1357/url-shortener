@@ -21,8 +21,26 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:8.4-alpine
+    container_name: redis_cache
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_volume:/data
+    networks:
+      - db-network
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   postgres_volume:
+  redis_volume:
 
 networks:
   db-network:

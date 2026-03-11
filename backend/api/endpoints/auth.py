@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
 
 from api.deps import get_db, get_current_user
 
+from core.token_blacklist import blacklist_token
 from models.models import User
 from schemas.auth import RegisterRequest, LoginRequest, TokenResponse
 import core.security as security
@@ -10,7 +12,7 @@ import core.security as security
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-def register(request: RegisterRequest, db: Session = Depends(get_db)):
+async def register(request: RegisterRequest, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(User.email == request.email).first()
 
     if existing_user:
@@ -29,7 +31,7 @@ def register(request: RegisterRequest, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=TokenResponse, status_code=status.HTTP_200_OK)
-def login(request: LoginRequest, db: Session = Depends(get_db)):
+async def login(request: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == request.email).first()
 
     if not user:
@@ -43,11 +45,16 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
     return TokenResponse(access_token=access_token)
 
 
+http_bearer = HTTPBearer()
+
 @router.post("/logout", status_code=status.HTTP_200_OK)
-def logout():
+async def logout(credentials = Depends(http_bearer)):
+    token = credentials.credentials
+    ttl = security.token_expiry_in_seconds(token)
+    await blacklist_token(token, ttl)
     return {"message": "logout successful"}
 
 
 @router.get("/me")
-def me(user_email = Depends(get_current_user)):
+async def me(user_email = Depends(get_current_user)):
     return {"user_email": user_email}
