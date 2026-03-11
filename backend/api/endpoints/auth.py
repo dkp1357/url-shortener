@@ -4,9 +4,9 @@ from sqlalchemy.orm import Session
 
 from api.deps import get_db, get_current_user
 
-from core.token_blacklist import blacklist_token
+from utils.token_blacklist import blacklist_token
 from models.models import User
-from schemas.auth import RegisterRequest, LoginRequest, TokenResponse
+from schemas.dto import RegisterRequest, LoginRequest, TokenResponse
 import core.security as security
 
 router = APIRouter(prefix="/auth", tags=["auth"])
