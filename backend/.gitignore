@@ -56,3 +56,5 @@ log.txt
 *.zip
 *.tar.gz
 .netlify/
+
+openapi.json
