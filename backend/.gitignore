@@ -17,7 +17,7 @@ share/
 bin/
 # virtualenv
 # .env file for secrets
-.env*
+.env
 
 # Editors/IDE
 # VS Code
