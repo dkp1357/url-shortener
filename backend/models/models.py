@@ -46,7 +46,7 @@ class ClickEvent(Base):
     url_id = Column(Integer, ForeignKey("urls.id"))
     timestamp = Column(DateTime(timezone=True), server_default=func.now())
     ip_hash = Column(String)
-    country_code = Column(String)
+    country_code = Column(String) #iso code for country
     device_type = Column(String)
     browser = Column(String)
     os = Column(String)

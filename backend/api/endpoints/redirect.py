@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
+from workers.click_publisher import publish_click
 from models.models import URL
 from api.deps import get_db
 from services.analytics import record_click
@@ -17,8 +18,9 @@ async def redirect(short_code: str, request: Request, db: Session = Depends(get_
     if not long_url:
         raise HTTPException(status_code=404, detail="URL not found")
 
-    await record_click(db, url_id, request)
+    click_data = record_click(url_id, request)
+    await publish_click(click_data)
 
-    return RedirectResponse(long_url, status_code=302)
+    return RedirectResponse(long_url, status_code=307)
 
 

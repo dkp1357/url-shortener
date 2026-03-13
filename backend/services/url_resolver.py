@@ -7,9 +7,19 @@ from models.models import URL
 
 CACHE_PREFIX = "url:"
 
+async def get_cached_url(code: str):
+    return await redis_client.get(CACHE_PREFIX + code)
+
+
+async def cache_url(code: str, url: str):
+    await redis_client.set(
+        CACHE_PREFIX + code,
+        url,
+        ex=3600
+    )
+
 async def get_long_url(short_code, db: Session):
-    cache_key = CACHE_PREFIX + short_code
-    cached = await redis_client.get(cache_key)
+    cached = await get_cached_url(short_code)
 
     if cached:
         return cached
@@ -23,5 +33,5 @@ async def get_long_url(short_code, db: Session):
     if not url:
         return None
 
-    await redis_client.set(cache_key, url.long_url, ex=3600)
+    await cache_url(short_code, url.long_url)
     return url.long_url

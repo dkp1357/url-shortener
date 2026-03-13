@@ -9,6 +9,7 @@ from middleware.rate_limit import RateLimitMiddleware
 from api.endpoints.auth import router as auth_router
 from api.endpoints.redirect import router as redirect_router
 from api.endpoints.url import router as url_router
+from api.endpoints.analytics import router as analytics_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -23,6 +24,7 @@ app.add_middleware(RateLimitMiddleware)
 app.include_router(auth_router)
 app.include_router(redirect_router)
 app.include_router(url_router)
+app.include_router(analytics_router)
 
 @app.get("/health", status_code=status.HTTP_200_OK)
 async def check_health():
