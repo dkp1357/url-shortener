@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     RATE_LIMIT_WINDOW: int = 60
     GEOIP2_DB_PATH: str = "geoipdata/GeoLite2-City.mmdb"
     RABBITMQ_URL: str
+    ALLOWED_ORIGINS: str
 
     model_config = SettingsConfigDict(
         env_file=".env",

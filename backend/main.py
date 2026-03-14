@@ -11,13 +11,26 @@ from api.endpoints.redirect import router as redirect_router
 from api.endpoints.url import router as url_router
 from api.endpoints.analytics import router as analytics_router
 
+from fastapi.middleware.cors import CORSMiddleware
+
+from core.config import settings
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     yield
 
+origins = settings.ALLOWED_ORIGINS.split(",")
 
 app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.add_middleware(RateLimitMiddleware)
 
