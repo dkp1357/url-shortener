@@ -14,7 +14,12 @@ const Layout = () => {
           <div className="flex gap-8 text-xs font-bold uppercase tracking-widest">
             {/* <a href="#" className="hover:text-primary transition-colors">Privacy</a>
             <a href="#" className="hover:text-primary transition-colors">Terms</a> */}
-            <a href="#" className="hover:text-primary transition-colors">
+            <a
+              href={`${import.meta.env.VITE_API_BASE_URL}/docs`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
               API docs
             </a>
           </div>

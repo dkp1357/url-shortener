@@ -19,7 +19,6 @@ async def record_click(url_id, request) -> dict:
         "timestamp": datetime.now(timezone.utc),
         "ip_hash": hash_ip(ip),
         "referrer_host": ref,
-        "user_agent": ua,
         "country_code": get_country_iso_code(ip),
         **parse_device(ua)
     })
