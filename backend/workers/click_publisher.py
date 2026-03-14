@@ -1,8 +1,7 @@
 import json
 import aio_pika
 from services.analytics import record_click
-from services.rabbitmq import channel, queue
-
+import services.rabbitmq as rabbitmq_service
 
 async def publish_click(url_id, request):
     click_data = await record_click(url_id, request)
@@ -12,4 +11,4 @@ async def publish_click(url_id, request):
         delivery_mode=aio_pika.DeliveryMode.PERSISTENT,
     )
 
-    await channel.default_exchange.publish(message, routing_key=queue.name)
+    await rabbitmq_service.channel.default_exchange.publish(message, routing_key=rabbitmq_service.queue.name)

@@ -101,6 +101,17 @@ const Home = () => {
           </div>
         )}
 
+        {user && (
+          <div className="flex justify-center mt-6">
+            <a
+              href="/dashboard"
+              className="btn btn-secondary px-6 py-2 rounded-xl hover:scale-95 transition-transform"
+            >
+              Dashboard
+            </a>
+          </div>
+        )}
+
         <AnimatePresence>
           {result && (
             <motion.div
