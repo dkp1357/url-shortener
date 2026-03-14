@@ -1,24 +1,15 @@
 import json
 import aio_pika
-from core.config import settings
+from services.analytics import record_click
+from services.rabbitmq import channel, queue
 
-async def publish_click(click_data: dict):
-    connection = await aio_pika.connect_robust(settings.RABBITMQ_URL)
 
-    async with connection:
-        channel = await connection.channel()
+async def publish_click(url_id, request):
+    click_data = await record_click(url_id, request)
 
-        queue = await channel.declare_queue(
-            "click_events",
-            durable=True
-        )
+    message = aio_pika.Message(
+        body=json.dumps(click_data).encode(),
+        delivery_mode=aio_pika.DeliveryMode.PERSISTENT,
+    )
 
-        message = aio_pika.Message(
-            body=json.dumps(click_data).encode(),
-            delivery_mode=aio_pika.DeliveryMode.PERSISTENT
-        )
-
-        await channel.default_exchange.publish(
-            message,
-            routing_key=queue.name
-        )
+    await channel.default_exchange.publish(message, routing_key=queue.name)
