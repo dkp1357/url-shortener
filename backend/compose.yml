@@ -25,6 +25,8 @@ services:
     image: redis:8.4-alpine
     container_name: redis_cache
     restart: unless-stopped
+    env_file:
+      - .env
     ports:
       - "6379:6379"
     volumes:
@@ -42,6 +44,8 @@ services:
     image: rabbitmq:4-management-alpine
     container_name: rabbitmq_broker
     restart: unless-stopped
+    env_file:
+      - .env
     ports:
       - "5672:5672" # AMQP
       - "15672:15672" # Management UI

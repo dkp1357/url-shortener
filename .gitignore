@@ -19,6 +19,7 @@ bin/
 # virtualenv
 # .env file for secrets
 .env
+.env.production
 
 # Editors/IDE
 # VS Code
