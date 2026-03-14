@@ -8,4 +8,5 @@ def get_country_iso_code(ip: str):
         response = reader.country(ip)
         return response.country.iso_code
     except Exception:
-        raise Exception("Invalid IP address or GeoIP lookup failed")
+        print(f"Invalid IP address: {ip} or GeoIP lookup failed")
+        return None

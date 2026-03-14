@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from workers.click_publisher import publish_click
 from models.models import URL
 from api.deps import get_db
-from services.analytics import record_click
 from services.url_resolver import get_long_url
 
 router = APIRouter(prefix="/r", tags=["redirect"])
@@ -18,8 +17,7 @@ async def redirect(short_code: str, request: Request, db: Session = Depends(get_
     if not long_url:
         raise HTTPException(status_code=404, detail="URL not found")
 
-    click_data = record_click(url_id, request)
-    await publish_click(click_data)
+    await publish_click(url_id, request)
 
     return RedirectResponse(long_url, status_code=307)
 
